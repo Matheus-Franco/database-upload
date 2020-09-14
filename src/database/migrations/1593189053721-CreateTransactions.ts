@@ -29,6 +29,11 @@ export default class CreateTransactions1593189053721
             type: 'varchar',
           },
           {
+            name: 'description',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',
