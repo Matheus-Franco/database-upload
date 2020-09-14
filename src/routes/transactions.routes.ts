@@ -7,6 +7,7 @@ import TransactionsRepository from '../repositories/TransactionsRepository';
 import CreateTransactionService from '../services/CreateTransactionService';
 import DeleteTransactionService from '../services/DeleteTransactionService';
 import ImportTransactionsService from '../services/ImportTransactionsService';
+import ListTransactionByIdService from '../services/ListTransactionByIdService';
 
 import uploadConfig from '../config/upload';
 
@@ -21,6 +22,16 @@ transactionsRouter.get('/', async (request, response) => {
   const balance = await transactionsRepository.getBalance();
 
   return response.json({ transactions, balance });
+});
+
+transactionsRouter.get('/:id', async (request, response) => {
+  const { id } = request.params;
+
+  const listTransactionById = new ListTransactionByIdService();
+
+  const transaction = await listTransactionById.execute({ id });
+
+  return response.json(transaction);
 });
 
 transactionsRouter.post('/', async (request, response) => {
