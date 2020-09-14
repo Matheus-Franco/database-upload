@@ -45,7 +45,7 @@ transactionsRouter.delete('/:id', async (request, response) => {
 
   await deleteTransaction.execute(id);
 
-  return response.status(204).send();
+  return response.json({ message: 'Transactions was deleted.' });
 });
 
 transactionsRouter.post(

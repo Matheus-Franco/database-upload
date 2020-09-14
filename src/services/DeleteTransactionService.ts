@@ -15,6 +15,8 @@ class DeleteTransactionService {
     }
 
     await transactionsRepository.remove(transaction);
+
+    await transactionsRepository.getBalance();
   }
 }
 
