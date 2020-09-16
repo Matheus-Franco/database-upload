@@ -6,7 +6,7 @@ import createConnection from '../shared/infra/typeorm';
 import Transaction from '../modules/transactions/infra/typeorm/entities/Transaction';
 import Category from '../modules/transactions/infra/typeorm/entities/Category';
 
-import app from '../shared/infra/http/server';
+import server from '../shared/infra/http/server';
 
 let connection: Connection;
 
@@ -34,30 +34,32 @@ describe('Transaction', () => {
   });
 
   it('should be able to list transactions', async () => {
-    await request(app).post('/transactions').send({
+    await request(server).post('/transactions').send({
       title: 'March Salary',
       type: 'income',
       value: 4000,
       category: 'Salary',
+      description: 'Little description',
     });
 
-    await request(app).post('/transactions').send({
+    await request(server).post('/transactions').send({
       title: 'April Salary',
       type: 'income',
       value: 4000,
       category: 'Salary',
+      description: 'Little description',
     });
 
-    await request(app).post('/transactions').send({
+    await request(server).post('/transactions').send({
       title: 'Macbook',
       type: 'outcome',
       value: 6000,
       category: 'Eletronics',
+      description: 'Little description',
     });
 
-    const response = await request(app).get('/transactions');
+    const response = await request(server).get('/transactions');
 
-    expect(response.body.transactions).toHaveLength(3);
     expect(response.body.balance).toMatchObject({
       income: 8000,
       outcome: 6000,
@@ -68,11 +70,12 @@ describe('Transaction', () => {
   it('should be able to create new transaction', async () => {
     const transactionsRepository = getRepository(Transaction);
 
-    const response = await request(app).post('/transactions').send({
+    const response = await request(server).post('/transactions').send({
       title: 'March Salary',
       type: 'income',
       value: 4000,
       category: 'Salary',
+      description: 'Little description',
     });
 
     const transaction = await transactionsRepository.findOne({
@@ -94,11 +97,12 @@ describe('Transaction', () => {
     const transactionsRepository = getRepository(Transaction);
     const categoriesRepository = getRepository(Category);
 
-    const response = await request(app).post('/transactions').send({
+    const response = await request(server).post('/transactions').send({
       title: 'March Salary',
       type: 'income',
       value: 4000,
       category: 'Salary',
+      description: 'Little description',
     });
 
     const category = await categoriesRepository.findOne({
@@ -135,11 +139,12 @@ describe('Transaction', () => {
 
     const insertedCategoryId = identifiers[0].id;
 
-    await request(app).post('/transactions').send({
+    await request(server).post('/transactions').send({
       title: 'March Salary',
       type: 'income',
       value: 4000,
       category: 'Salary',
+      description: 'Little description',
     });
 
     const transaction = await transactionsRepository.findOne({
@@ -156,18 +161,20 @@ describe('Transaction', () => {
   });
 
   it('should not be able to create outcome transaction without a valid balance', async () => {
-    await request(app).post('/transactions').send({
+    await request(server).post('/transactions').send({
       title: 'March Salary',
       type: 'income',
       value: 4000,
       category: 'Salary',
+      description: 'Little description',
     });
 
-    const response = await request(app).post('/transactions').send({
+    const response = await request(server).post('/transactions').send({
       title: 'iPhone',
       type: 'outcome',
       value: 4500,
       category: 'Eletronics',
+      description: 'Little description',
     });
 
     expect(response.status).toBe(400);
@@ -182,14 +189,15 @@ describe('Transaction', () => {
   it('should be able to delete a transaction', async () => {
     const transactionsRepository = getRepository(Transaction);
 
-    const response = await request(app).post('/transactions').send({
+    const response = await request(server).post('/transactions').send({
       title: 'March Salary',
       type: 'income',
       value: 4000,
       category: 'Salary',
+      description: 'Little description',
     });
 
-    await request(app).delete(`/transactions/${response.body.id}`);
+    await request(server).delete(`/transactions/${response.body.id}`);
 
     const transaction = await transactionsRepository.findOne(response.body.id);
 
@@ -202,7 +210,9 @@ describe('Transaction', () => {
 
     const importCSV = path.resolve(__dirname, 'import_template.csv');
 
-    await request(app).post('/transactions/import').attach('file', importCSV);
+    await request(server)
+      .post('/transactions/import')
+      .attach('file', importCSV);
 
     const transactions = await transactionsRepository.find();
     const categories = await categoriesRepository.find();

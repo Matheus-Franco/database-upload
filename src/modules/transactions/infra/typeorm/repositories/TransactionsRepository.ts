@@ -22,6 +22,12 @@ interface CSVtransaction {
   category: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
+interface IReturnType {
+  transactions: Transaction[];
+  balance: Balance;
+}
+
 class TransactionsRepository implements ITransactionsRepository {
   private ormRepository: Repository<Transaction>;
 
@@ -101,10 +107,11 @@ class TransactionsRepository implements ITransactionsRepository {
     return transaction;
   }
 
-  public async findAll(): Promise<Transaction[]> {
+  public async findAll(): Promise<IReturnType> {
     const transactions = await this.ormRepository.find();
+    const balance = await this.getBalance();
 
-    return transactions;
+    return { transactions, balance };
   }
 
   public async deleteTransaction(id: string): Promise<void> {

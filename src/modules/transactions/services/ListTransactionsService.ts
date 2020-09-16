@@ -1,7 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 
-import Transaction from '../infra/typeorm/entities/Transaction';
-import ITransactionsRepository from '../repositories/ITransactionsRepository';
+import ITransactionsRepository, {
+  IReturnType,
+} from '../repositories/ITransactionsRepository';
 
 @injectable()
 class ListTransactionsService {
@@ -10,7 +11,7 @@ class ListTransactionsService {
     private transactionsRepository: ITransactionsRepository,
   ) {}
 
-  public async execute(): Promise<Transaction[]> {
+  public async execute(): Promise<IReturnType> {
     const transactions = await this.transactionsRepository.findAll();
 
     return transactions;
