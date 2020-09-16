@@ -247,4 +247,26 @@ describe('Transaction', () => {
       ]),
     );
   });
+
+  it('should be able to list a transaction by ID', async () => {
+    const teste = await request(server).post('/transactions').send({
+      title: 'T-shirt',
+      type: 'income',
+      value: 149,
+      category: 'Clothings',
+      description: 'I bought one t-shirt.',
+    });
+
+    await request(server).post('/transactions').send({
+      title: 'March Salary',
+      type: 'income',
+      value: 4000,
+      category: 'Salary',
+      description: 'Little description',
+    });
+
+    const result = await request(server).get(`/transactions/${teste.body.id}`);
+
+    expect(result.body.title).toEqual('T-shirt');
+  });
 });
