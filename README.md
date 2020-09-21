@@ -22,4 +22,20 @@
 
 <br />
 
+## 👨‍💻 Installation
+
+```
+## Clone this repository
+1. git clone https://github.com/Matheus-Franco/database-upload.git
+
+## Go into the repository
+2. cd database-upload
+
+## Install all dependencies
+3. yarn
+
+## Run
+4. yarn dev:server (to start de server)
+```
+
 <strong>Front-end Repository</strong>: https://github.com/Matheus-Franco/GoFinances
