@@ -4,12 +4,14 @@ import AppError from '../../../shared/errors/AppError';
 import Transaction from '../infra/typeorm/entities/Transaction';
 import ITransactionsRepository from '../repositories/ITransactionsRepository';
 
-interface Request {
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
+interface IRequest {
   title: string;
   value: number;
   type: 'income' | 'outcome';
   category: string;
   description: string;
+  user_id: string;
 }
 
 @injectable()
@@ -25,7 +27,8 @@ class CreateTransactionService {
     type,
     category,
     description,
-  }: Request): Promise<Transaction> {
+    user_id,
+  }: IRequest): Promise<Transaction> {
     const { total } = await this.transactionsRepository.getBalance();
 
     if (type === 'outcome' && total < value) {
@@ -38,6 +41,7 @@ class CreateTransactionService {
       type,
       category,
       description,
+      user_id,
     });
 
     return transaction;

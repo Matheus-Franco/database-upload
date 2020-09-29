@@ -73,6 +73,7 @@ class TransactionsRepository implements ITransactionsRepository {
     title,
     type,
     value,
+    user_id,
   }: ICreateTransactionDTO): Promise<Transaction> {
     let transactionCategoryName = await this.ormCategoryRepository.findOne({
       where: { title: category },
@@ -92,6 +93,7 @@ class TransactionsRepository implements ITransactionsRepository {
       type,
       category: transactionCategoryName,
       description,
+      user_id,
     });
 
     await this.ormRepository.save(transaction);

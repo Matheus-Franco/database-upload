@@ -2,6 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 
 import uploadConfig from '../../../../../config/upload';
+import ensureAuth from '../../../../users/infra/http/middlewares/ensureAuth';
 
 import CreateTransactionController from '../controllers/CreateTransactionController';
 import DeleteTransactionController from '../controllers/DeleteTransactionController';
@@ -18,6 +19,8 @@ const listTransactionsController = new ListTransactionsController();
 const upload = multer(uploadConfig);
 
 const transactionsRouter = Router();
+
+transactionsRouter.use(ensureAuth);
 
 transactionsRouter.get('/', listTransactionsController.index);
 transactionsRouter.get('/:id', listTransactionByIdController.index);
