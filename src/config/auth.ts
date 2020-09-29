@@ -1,6 +1,6 @@
 export default {
   jwt: {
-    secret: '124mnsdoajsl1349245',
+    secret: '124mnsdoajsl1349',
     expiresIn: '1d',
   },
 };
