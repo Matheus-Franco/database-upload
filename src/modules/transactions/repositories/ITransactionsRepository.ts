@@ -14,11 +14,14 @@ export interface IReturnType {
 }
 
 // eslint-disable-next-line @typescript-eslint/interface-name-prefix
+
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export default interface ITransactionsRepository {
   getBalance(): Promise<Balance>;
-  createTransaction(data: ICreateTransactionDTO): Promise<Transaction>;
+  create(data: ICreateTransactionDTO): Promise<Transaction>;
   findByID(id: string): Promise<Transaction | undefined>;
   findAll(): Promise<IReturnType>;
-  deleteTransaction(id: string): Promise<void>;
+  delete(id: string): Promise<void>;
   createByImport(filePath: string): Promise<Transaction[]>;
+  findUsersTransactions(user_id: string): Promise<IReturnType>;
 }

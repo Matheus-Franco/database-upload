@@ -10,11 +10,14 @@ import ImportTransactionController from '../controllers/ImportTransactionControl
 import ListTransactionByIdController from '../controllers/ListTransactionByIdController';
 import ListTransactionsController from '../controllers/ListTransactionsController';
 
+import ListUsersTransactionsController from '../controllers/ListUsersTransactionsController';
+
 const createTransactionController = new CreateTransactionController();
 const deleteTransactionController = new DeleteTransactionController();
 const importTransactionController = new ImportTransactionController();
 const listTransactionByIdController = new ListTransactionByIdController();
 const listTransactionsController = new ListTransactionsController();
+const listUsersTransactionsController = new ListUsersTransactionsController();
 
 const upload = multer(uploadConfig);
 
@@ -22,6 +25,7 @@ const transactionsRouter = Router();
 
 transactionsRouter.use(ensureAuth);
 
+transactionsRouter.get('/my', listUsersTransactionsController.show);
 transactionsRouter.get('/', listTransactionsController.index);
 transactionsRouter.get('/:id', listTransactionByIdController.index);
 transactionsRouter.post('/', createTransactionController.create);

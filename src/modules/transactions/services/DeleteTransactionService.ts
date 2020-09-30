@@ -22,7 +22,7 @@ class DeleteTransactionService {
       throw new AppError('Sorry, transaction not found.');
     }
 
-    await this.transactionsRepository.deleteTransaction(id);
+    await this.transactionsRepository.delete(id);
 
     await this.transactionsRepository.getBalance();
   }

@@ -35,7 +35,7 @@ class CreateTransactionService {
       throw new AppError('Beware of Debits!');
     }
 
-    const transaction = await this.transactionsRepository.createTransaction({
+    const transaction = await this.transactionsRepository.create({
       title,
       value,
       type,

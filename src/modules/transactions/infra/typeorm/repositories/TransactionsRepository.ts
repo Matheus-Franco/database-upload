@@ -2,6 +2,8 @@ import { getRepository, Repository, In } from 'typeorm';
 import fs from 'fs';
 import csvParse from 'csv-parse';
 
+import verifyBalance from '../../../../../utils/verifyBalance';
+
 import ITransactionsRepository from '../../../repositories/ITransactionsRepository';
 import Transaction from '../entities/Transaction';
 
@@ -28,6 +30,12 @@ interface IReturnType {
   balance: Balance;
 }
 
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
+interface IReturnUserTransactions {
+  transactionUserID: Transaction[];
+  balance: Balance;
+}
+
 class TransactionsRepository implements ITransactionsRepository {
   private ormRepository: Repository<Transaction>;
 
@@ -41,33 +49,14 @@ class TransactionsRepository implements ITransactionsRepository {
   public async getBalance(): Promise<Balance> {
     const transactions = await this.ormRepository.find();
 
-    const { income, outcome } = transactions.reduce(
-      (accumulator, transaction) => {
-        switch (transaction.type) {
-          case 'income':
-            accumulator.income += Number(transaction.value);
-            break;
-          case 'outcome':
-            accumulator.outcome += Number(transaction.value);
-            break;
-          default:
-            break;
-        }
-        return accumulator;
-      },
-      {
-        income: 0,
-        outcome: 0,
-        total: 0,
-      },
-    );
+    const { income, outcome } = verifyBalance(transactions);
 
     const total = income - outcome;
 
     return { income, outcome, total };
   }
 
-  public async createTransaction({
+  public async create({
     category,
     description,
     title,
@@ -116,7 +105,7 @@ class TransactionsRepository implements ITransactionsRepository {
     return { transactions, balance };
   }
 
-  public async deleteTransaction(id: string): Promise<void> {
+  public async delete(id: string): Promise<void> {
     const transaction = await this.ormRepository.findOne({
       where: { id },
     });
@@ -191,6 +180,20 @@ class TransactionsRepository implements ITransactionsRepository {
     await fs.promises.unlink(filePath);
 
     return createdTransactions;
+  }
+
+  public async findUsersTransactions(user_id: string): Promise<IReturnType> {
+    const transactionsWithoutFilter = await this.ormRepository.find();
+
+    const transactions = transactionsWithoutFilter.filter(
+      each => each.user_id === user_id,
+    );
+
+    const { income, outcome } = verifyBalance(transactions);
+
+    const total = income - outcome;
+
+    return { transactions, balance: { income, outcome, total } };
   }
 }
 
