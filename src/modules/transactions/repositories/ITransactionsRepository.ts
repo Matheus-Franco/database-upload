@@ -1,23 +1,19 @@
 import Transaction from '../infra/typeorm/entities/Transaction';
 import ICreateTransactionDTO from '../dtos/ICreateTransactionDTO';
 
-export interface Balance {
+export interface IBalance {
   income: number;
   outcome: number;
   total: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IReturnType {
   transactions: Transaction[];
-  balance: Balance;
+  balance: IBalance;
 }
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
-
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export default interface ITransactionsRepository {
-  getBalance(): Promise<Balance>;
+  getBalance(): Promise<IBalance>;
   create(data: ICreateTransactionDTO): Promise<Transaction>;
   findByID(id: string): Promise<Transaction | undefined>;
   findAll(): Promise<IReturnType>;

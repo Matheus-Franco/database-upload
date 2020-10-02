@@ -4,7 +4,6 @@ import AppError from '../../../shared/errors/AppError';
 import Transaction from '../infra/typeorm/entities/Transaction';
 import ITransactionsRepository from '../repositories/ITransactionsRepository';
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 interface IRequest {
   title: string;
   value: number;

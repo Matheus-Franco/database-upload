@@ -11,7 +11,7 @@ import ICreateTransactionDTO from '../../../dtos/ICreateTransactionDTO';
 import Category from '../entities/Category';
 import AppError from '../../../../../shared/errors/AppError';
 
-interface Balance {
+interface IBalance {
   income: number;
   outcome: number;
   total: number;
@@ -24,16 +24,9 @@ interface CSVtransaction {
   category: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 interface IReturnType {
   transactions: Transaction[];
-  balance: Balance;
-}
-
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
-interface IReturnUserTransactions {
-  transactionUserID: Transaction[];
-  balance: Balance;
+  balance: IBalance;
 }
 
 class TransactionsRepository implements ITransactionsRepository {
@@ -46,7 +39,7 @@ class TransactionsRepository implements ITransactionsRepository {
     this.ormCategoryRepository = getRepository(Category);
   }
 
-  public async getBalance(): Promise<Balance> {
+  public async getBalance(): Promise<IBalance> {
     const transactions = await this.ormRepository.find();
 
     const { income, outcome } = verifyBalance(transactions);

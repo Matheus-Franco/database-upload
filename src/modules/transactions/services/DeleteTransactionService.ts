@@ -4,7 +4,7 @@ import AppError from '../../../shared/errors/AppError';
 
 import ITransactionsRepository from '../repositories/ITransactionsRepository';
 
-interface Request {
+interface IRequest {
   id: string;
 }
 
@@ -15,7 +15,7 @@ class DeleteTransactionService {
     private transactionsRepository: ITransactionsRepository,
   ) {}
 
-  public async execute({ id }: Request): Promise<void> {
+  public async execute({ id }: IRequest): Promise<void> {
     const transaction = await this.transactionsRepository.findByID(id);
 
     if (!transaction) {

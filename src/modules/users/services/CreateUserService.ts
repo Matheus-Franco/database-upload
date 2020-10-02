@@ -8,7 +8,6 @@ import IUsersRepository from '../repositories/IUsersRepository';
 import User from '../infra/typeorm/entities/User';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 interface IRequest {
   name: string;
   email: string;

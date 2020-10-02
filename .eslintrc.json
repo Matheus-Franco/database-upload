@@ -24,6 +24,7 @@
     "prettier"
   ],
   "rules": {
+    "@typescript-eslint/interface-name-prefix": "off",
     "no-useless-constructor": "off",
     "no-underscore-dangle": "off",
     "prettier/prettier": "error",

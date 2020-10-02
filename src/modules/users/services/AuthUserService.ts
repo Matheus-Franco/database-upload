@@ -9,13 +9,11 @@ import User from '../infra/typeorm/entities/User';
 import AppError from '../../../shared/errors/AppError';
 import auth from '../../../config/auth';
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 interface IRequest {
   email: string;
   password: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 interface IResponse {
   user: User;
   token: string;

@@ -5,7 +5,7 @@ import AppError from '../../../shared/errors/AppError';
 import Transaction from '../infra/typeorm/entities/Transaction';
 import ITransactionsRepository from '../repositories/ITransactionsRepository';
 
-interface Request {
+interface IRequest {
   id: string;
 }
 
@@ -16,7 +16,7 @@ class ListTransactionByIdService {
     private transactionsRepository: ITransactionsRepository,
   ) {}
 
-  public async execute({ id }: Request): Promise<Transaction> {
+  public async execute({ id }: IRequest): Promise<Transaction> {
     const transaction = await this.transactionsRepository.findByID(id);
 
     if (!transaction) {

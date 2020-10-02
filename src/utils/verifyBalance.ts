@@ -1,6 +1,5 @@
 import Transaction from '../modules/transactions/infra/typeorm/entities/Transaction';
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 interface IBalance {
   income: number;
   outcome: number;
