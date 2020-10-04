@@ -4,12 +4,13 @@ import AppError from '../../../shared/errors/AppError';
 import Transaction from '../infra/typeorm/entities/Transaction';
 import ITransactionsRepository from '../repositories/ITransactionsRepository';
 
-interface Request {
+interface IRequest {
   title: string;
   value: number;
   type: 'income' | 'outcome';
   category: string;
   description: string;
+  user_id: string;
 }
 
 @injectable()
@@ -25,19 +26,21 @@ class CreateTransactionService {
     type,
     category,
     description,
-  }: Request): Promise<Transaction> {
+    user_id,
+  }: IRequest): Promise<Transaction> {
     const { total } = await this.transactionsRepository.getBalance();
 
     if (type === 'outcome' && total < value) {
       throw new AppError('Beware of Debits!');
     }
 
-    const transaction = await this.transactionsRepository.createTransaction({
+    const transaction = await this.transactionsRepository.create({
       title,
       value,
       type,
       category,
       description,
+      user_id,
     });
 
     return transaction;
